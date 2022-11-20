@@ -78,6 +78,8 @@ public class GameController {
 			model.addAttribute("genres", genrerepository.findAll());
 			return "addGame";
 		} else if (file.isEmpty()) {
+			model.addAttribute("developers", devrepository.findAll());
+			model.addAttribute("genres", genrerepository.findAll());
         	model.addAttribute("msg", "Upload failed");
             return "addGame";
         } else {
