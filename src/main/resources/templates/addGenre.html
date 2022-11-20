@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <title>new owner</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+    <link type="text/css" rel="stylesheet" href="/css/styles.css" th:href="@{/css/styles.css}" />
+</head>
+<body>
+	<!-- Navigation -->
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  	<div class="container-fluid">
+   		<a class="navbar-brand title" style="color: white;" href="#">GAMES</a>
+   		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      		<span class="navbar-toggler-icon"></span>
+    	</button>
+    	<div class="collapse navbar-collapse" id="navbarNav">
+     	<ul class="navbar-nav">
+        	<li class="nav-item">
+         		<a class="nav-link" href="/">Home</a>
+        	</li>
+        	<li class="nav-item">
+         		<a class="nav-link" href="/gamelist" >Games</a>
+        	</li>
+        	<li class="nav-item">
+          		<a class="nav-link" href="/developerlist" sec:authorize="hasAuthority('ADMIN')">Developers</a>
+       		</li>
+        	<li class="nav-item">
+          		<a class="nav-link" href="/genrelist" sec:authorize="hasAuthority('ADMIN')">Genres</a>
+        	</li>
+        	<li class="nav-item">
+         		 <a class="nav-link" href="/userlist" sec:authorize="hasAuthority('ADMIN')">Users</a>
+        	</li>
+        	<li class="nav-item">
+         		<a class="nav-link" href="/register">Sign up</a>
+        	</li>
+      	</ul>
+      	<form th:action="@{/logout}" method="post" class="d-flex ms-auto">
+			<input type="submit" value="Sign Out" class="btn btn-sm btn-danger"/>
+	  	</form>
+   		 </div>
+  	</div>
+	</nav>
+	<!-- Content -->
+	<div class="container col-lg-4">
+		<h1 class="display-4">New genre</h1>
+		<form action="#" th:object="${newGenre}" th:action="@{saveGenre}" method="post">
+			<label>Title</label>
+			<input type="text" th:field="*{genreName}" class="form-control" />
+			<p th:if="${#fields.hasErrors('genreName')}" th:errors="*{genreName}">Name Error</p>			
+			<br>						
+			<input type="submit" value="Save" class="btn btn-success"></input>
+		</form>
+	</div>
+</body>
+</html>

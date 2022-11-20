@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <title>Game list</title>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+    <link type="text/css" rel="stylesheet" href="/css/styles.css" th:href="@{/css/styles.css}" />
+</head>
+<body>
+	<!-- Navigation -->
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  	<div class="container-fluid">
+   		<a class="navbar-brand title" style="color: white;" href="#">GAMES</a>
+   		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      		<span class="navbar-toggler-icon"></span>
+    	</button>
+    	<div class="collapse navbar-collapse" id="navbarNav">
+     	<ul class="navbar-nav">
+        	<li class="nav-item">
+         		<a class="nav-link" href="/">Home</a>
+        	</li>
+        	<li class="nav-item">
+         		<a class="nav-link active" aria-current="page" href="/gamelist" >Games</a>
+        	</li>
+        	<li class="nav-item">
+          		<a class="nav-link" href="/developerlist" sec:authorize="hasAuthority('ADMIN')">Developers</a>
+       		</li>
+        	<li class="nav-item">
+          		<a class="nav-link" href="/genrelist" sec:authorize="hasAuthority('ADMIN')">Genres</a>
+        	</li>
+        	<li class="nav-item">
+         		 <a class="nav-link" href="/userlist" sec:authorize="hasAuthority('ADMIN')">Users</a>
+        	</li>
+        	<li class="nav-item">
+         		<a class="nav-link" href="/register">Sign up</a>
+        	</li>
+      	</ul>
+      	<form th:action="@{/logout}" method="post" class="d-flex ms-auto">
+			<input type="submit" value="Sign Out" class="btn btn-sm btn-danger"/>
+	  	</form>
+   		</div>
+  	</div>
+	</nav>
+	
+	<!-- Content -->
+	<div class="container">
+		<h1 class="display-3">Games</h1>
+	    <table class="table table-striped">
+			<tr>
+			    <th>Title</th>
+				<th>Release year</th>
+			    <th>Description</th>
+			    <th>Price</th>
+			    <th>Developer</th>
+			    <th>Genre</th>
+			    <th>Image</th>
+			    <th sec:authorize="hasAuthority('ADMIN')"></th>
+			</tr>  
+	    	<tr th:each = "game : ${games}">
+	    		<td th:text="${game.title}"></td>
+	    		<td th:text="${game.releaseYear}"></td>
+	    		<td th:text="${game.description}"></td>
+	    		<td th:text="${game.price}"></td>
+	    		<td th:text="${game.developer.devName}"></td>
+	    		<td th:text="${game.genre.genreName}"></td>
+	    		<td><img th:src="@{'data:image/jpeg;base64,'+${game.image}}" /></td>
+	    		<td sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/editGame/{id}(id=${game.id})}" class="btn btn-sm btn-primary" style="margin-bottom: 0.5em;">Edit</a>
+	 			<a th:href="@{/deleteGame/{id}(id=${game.id})}" class="btn btn-sm btn-danger">Delete</a></td>	
+	    	</tr>
+	     </table>
+	     <a href="/addGame" class="btn btn-success" sec:authorize="hasAuthority('ADMIN')">Add game</a>
+     </div>
+</body>
+</html>

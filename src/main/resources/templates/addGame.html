@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <title>New Game</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+    <link type="text/css" rel="stylesheet" href="/css/styles.css" th:href="@{/css/styles.css}" />
+</head>
+<body>
+	<!-- Navigation -->
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  	<div class="container-fluid">
+   		<a class="navbar-brand title" style="color: white;" href="#">GAMES</a>
+   		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      		<span class="navbar-toggler-icon"></span>
+    	</button>
+    	<div class="collapse navbar-collapse" id="navbarNav">
+     	<ul class="navbar-nav">
+        	<li class="nav-item">
+         		<a class="nav-link" href="/">Home</a>
+        	</li>
+        	<li class="nav-item">
+         		<a class="nav-link" href="/gamelist" >Games</a>
+        	</li>
+        	<li class="nav-item">
+          		<a class="nav-link" href="/developerlist" sec:authorize="hasAuthority('ADMIN')">Developers</a>
+       		</li>
+        	<li class="nav-item">
+          		<a class="nav-link" href="/genrelist" sec:authorize="hasAuthority('ADMIN')">Genres</a>
+        	</li>
+        	<li class="nav-item">
+         		 <a class="nav-link" href="/userlist" sec:authorize="hasAuthority('ADMIN')">Users</a>
+        	</li>
+        	<li class="nav-item">
+         		<a class="nav-link" href="/register">Sign up</a>
+        	</li>
+      	</ul>
+      	<form th:action="@{/logout}" method="post" class="d-flex ms-auto">
+			<input type="submit" value="Sign Out" class="btn btn-sm btn-danger"/>
+	  	</form>
+   		 </div>
+  	</div>
+	</nav>
+	<!-- Content -->
+	<div class="container col-lg-6">
+		<h1 class="display-4">New game</h1>
+		<div class="col-lg-8">
+		<form action="#" th:object="${newGame}" th:action="@{saveGame(${_csrf.parameterName}=${_csrf.token})}" method="post" enctype="multipart/form-data">
+		  	<label>Title</label>
+			<input type="text" th:field="*{title}" class="form-control" />
+			<p th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title Error</p>	
+				<div style="clear: both; display: block; height: 10px;"></div>
+		  	<label>Release year</label>
+			<input type="number" th:field="*{releaseYear}" class="form-control"/>
+			<p th:if="${#fields.hasErrors('releaseYear')}" th:errors="*{releaseYear}">Release year Error</p>	
+				<div style="clear: both; display: block; height: 10px;"></div>
+		  	<label>Description</label>
+			<input type="text" step=0.01 th:field="*{description}" class="form-control"/>
+			<p th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description Error</p>	
+				<div style="clear: both; display: block; height: 10px;"></div>	
+		  	<label>Price</label>
+			<input type="text" th:field="*{price}" class="form-control"/>
+				<div style="clear: both; display: block; height: 10px;"></div>
+			<label>Developer</label>
+			<select id="devs" th:field="*{developer}" class="form-control">
+				<option th:each="developer: ${developers}" th:value="${developer.id}" th:text="${developer.devName}"></option>
+			</select>
+				<div style="clear: both; display: block; height: 10px;"></div>
+			<label>Genre</label>
+			<select id="genrelist" th:field="*{genre}" class="form-control">
+				<option th:each="genre: ${genres}" th:value="${genre.id}" th:text="${genre.genreName}"></option>
+			</select>
+			<br>
+			<label>Image:</label>
+			<input type="file" name="file" /><br/>
+				<div style="clear: both; display: block; height: 20px;"></div> 					
+			<input type="submit" value="Save" class="btn btn-success"></input>
+		</form>
+		<h3 th:text="${msg}"></h3>
+		</div>
+	</div>
+</body>
+</html>
